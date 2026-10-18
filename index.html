@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Helena & Oscar · 29 mai 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#dcebf8;--surface:#f6fafe;--ink:#1c2f4a;--muted:#4d6785;--blue:#2c5d8f;--line:#b7d0e8;--tint:#c9dff3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{overflow-x:clip;margin:0;background:var(--bg);color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.7}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;margin:0}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+h2{font-size:2rem;text-align:center;margin-bottom:8px;color:var(--blue)}
+.eyebrow{text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;color:var(--muted);text-align:center}
+.orn{display:block;margin:10px auto 32px;width:64px;height:8px}
+#gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+#gate h1{font-size:clamp(2.6rem,9vw,4rem);margin:12px 0 28px}
+#gate input{font:inherit;padding:12px 16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:260px;max-width:100%;text-align:center}
+button{font:inherit;letter-spacing:.15em;text-transform:uppercase;font-size:.8rem;padding:13px 28px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;margin-top:14px}
+#err{color:#b3413a;min-height:1.4em;font-size:.9rem;margin-top:10px}
+#site{display:none}
+.hero{text-align:center;padding:24vh 24px 20vh;color:#fff;background:linear-gradient(180deg,rgba(14,38,66,.35),rgba(14,38,66,.55)),var(--img) center 48%/cover no-repeat,#1c2f4a}
+.hero .eyebrow{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.hero h1{font-size:clamp(3rem,11vw,5.5rem);line-height:1.05;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35)}
+.hero h1 em{color:#bcd8f0;font-style:italic}
+.hero p{margin:20px 0 0;letter-spacing:.25em;text-transform:uppercase;font-size:.85rem;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1.35rem;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--blue)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--muted)}
+a{color:var(--blue)}
+form{display:grid;gap:18px;margin-top:28px}
+label{display:grid;gap:6px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+form input,form textarea,form select{font:inherit;font-size:1rem;letter-spacing:0;text-transform:none;padding:11px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+#done{display:none;text-align:center;padding:24px;background:var(--tint);margin-top:24px}
+.count{position:relative;isolation:isolate;overflow:hidden;width:100vw;margin:0 0 0 calc(50% - 50vw);text-align:center;padding:72px 24px;color:#fff;background:#2c5d8f}
+.count::before{content:"";position:absolute;inset:0;z-index:-2;background:#1c2f4a}
+.count .eyebrow,.count .l{color:#fff;font-weight:400;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.count .n{color:#fff!important;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.count .grid{display:flex;justify-content:center;gap:clamp(14px,5vw,40px);margin-top:20px}
+.count .u{min-width:64px}
+.count .n{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.4rem,9vw,3.6rem);line-height:1;color:var(--blue)}
+.count .l{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.menu{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:14px;z-index:30}
+.menu-btn{width:44px;height:44px;margin:0;padding:0;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 2px 10px rgba(28,47,74,.15)}
+.menu-btn span{display:block;width:18px;height:1.5px;background:var(--ink);transition:transform .25s,opacity .25s}
+.menu.open .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.menu.open .menu-btn span:nth-child(2){opacity:0}
+.menu.open .menu-btn span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.menu-panel{position:absolute;top:54px;right:0;min-width:210px;background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 24px rgba(28,47,74,.18);padding:8px 0;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s}
+.menu.open .menu-panel{opacity:1;visibility:visible;transform:none}
+.menu-panel a{display:block;padding:12px 22px;color:var(--ink);text-decoration:none;text-transform:uppercase;letter-spacing:.2em;font-size:.75rem}
+.menu-panel a:hover,.menu-panel a:focus-visible{background:var(--tint);color:var(--blue)}
+.venue{text-align:center}
+.zoom{overflow:hidden;width:min(360px,100%);margin:0 auto 24px;border:1px solid var(--line)}
+.venue2 .zoom{width:min(560px,100%)}
+.zoom img{display:block;width:100%;height:auto;transition:transform .6s ease}
+.zoom:hover img{transform:scale(1.08)}
+@media (hover:none){.zoom:hover img{transform:none}}
+.venue h3{font-size:1.7rem;color:var(--ink)}
+.venue .addr{margin:6px 0 20px;color:var(--muted);font-size:.95rem}
+.venue em{display:block;max-width:560px;margin:0 auto;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;line-height:1.6;color:var(--ink)}
+.venue{background:var(--surface);border:1px solid #7fa6cd;padding:36px 24px 40px;box-shadow:0 4px 18px rgba(28,47,74,.08)}
+.venue2{margin-top:32px}
+.maplink{margin:-8px 0 0}
+.maplink a{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.maplink a:hover{opacity:.7}
+.vlabel{display:block;margin-bottom:20px;text-transform:uppercase;letter-spacing:.25em;font-size:.72rem;color:var(--blue)}
+#faq{background:#1c2f4a;color:#eaf1f8;width:100vw;margin-left:calc(50% - 50vw);padding:72px max(24px,calc(50vw - 336px));border-top:0}
+#faq h2,#faq summary::after,#faq a{color:#9cc4ea}
+#faq .eyebrow{color:#b9cde3}
+#faq .orn path{stroke:#9cc4ea}
+#faq summary{color:#fff}
+#faq details{border-bottom-color:#33507a}
+#faq details p{color:#c9dcef}
+.gate-lang{margin-top:26px;display:flex;gap:4px;justify-content:center}
+.gate-lang button,.lang-panel button{margin:0;background:none;border:0;color:var(--muted);padding:6px 10px;font-size:.75rem;letter-spacing:.15em}
+.gate-lang button.on,.lang-panel button.on{color:var(--blue);text-decoration:underline;text-underline-offset:5px}
+.lang{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:68px;z-index:30}
+.lang-btn{height:44px;margin:0;padding:0 16px;border-radius:22px;background:var(--surface);border:1px solid var(--line);color:var(--ink);font-size:.72rem;letter-spacing:.12em;cursor:pointer;box-shadow:0 2px 10px rgba(28,47,74,.15)}
+.lang-panel{position:absolute;top:54px;right:0;min-width:150px;background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 24px rgba(28,47,74,.18);padding:8px 0;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s}
+.lang.open .lang-panel{opacity:1;visibility:visible;transform:none}
+.lang-panel button{display:block;width:100%;text-align:left;padding:10px 22px;font-size:.9rem;letter-spacing:.05em;text-transform:none;color:var(--ink)}
+.lang-panel button:hover,.lang-panel button:focus-visible{background:var(--tint)}
+.timeline{list-style:none;padding:0;margin:20px 0 0;text-align:center}
+.timeline li{padding:0 0 28px}
+.timeline li::before{content:"";display:block;width:52px;height:52px;margin:0 auto 10px;background:var(--bullet) center/contain no-repeat}
+.timeline .time{display:block;font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+.timeline .ttl{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.7rem;font-weight:400;line-height:1.2;color:var(--blue);margin:4px 0}
+.timeline .det{display:block;color:var(--muted);font-size:.95rem}
+#lieux{background:#b7d0e8;width:100vw;margin-left:calc(50% - 50vw);padding:72px max(24px,calc(50vw - 336px));border-top:0}
+#egg{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(14,38,66,.9);opacity:0;visibility:hidden;transition:opacity .6s,visibility .6s;cursor:pointer}
+#egg.show{opacity:1;visibility:visible}
+#egg img{max-width:92vw;max-height:88vh;box-shadow:0 10px 40px rgba(0,0,0,.5);transform:scale(.92);transition:transform .8s ease}
+#egg.show img{transform:none}
+:root{--img:url("images/hero.jpg");--bullet:url("images/bullet.png")}
+footer{text-align:center;padding:48px 24px;color:var(--muted);font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <svg class="orn" viewBox="0 0 64 8" aria-hidden="true"><path d="M0 4 Q8 0 16 4 T32 4 T48 4 T64 4" fill="none" stroke="currentColor" style="color:var(--blue)" stroke-width="1"/></svg>
+  <div class="eyebrow" data-i18n="gate_eyebrow">Vous êtes invité·e</div>
+  <h1>Helena &amp; Oscar</h1>
+  <input id="pw" type="password" placeholder="Mot de passe" data-i18n-ph="pw_ph" autocomplete="off" aria-label="Mot de passe">
+  <button id="enter" data-i18n="enter">Entrer</button>
+  <div id="err" role="alert"></div>
+  <div class="gate-lang" id="gateLang"></div>
+</div>
+
+<div id="site">
+  <div class="lang" id="lang">
+    <button class="lang-btn" id="langBtn" type="button" aria-haspopup="true" aria-expanded="false"><span id="langCode">FR</span> ▾</button>
+    <div class="lang-panel" id="langPanel"></div>
+  </div>
+  <div class="menu" id="menu">
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menuPanel"><span></span><span></span><span></span></button>
+    <nav class="menu-panel" id="menuPanel" aria-label="Navigation">
+      <a href="#programme" data-i18n="nav_prog">Programme</a>
+      <a href="#lieux" data-i18n="nav_lieux">Les lieux</a>
+      <a href="#rsvp">RSVP</a>
+      <a href="#faq" data-i18n="nav_faq">Infos pratiques</a>
+    </nav>
+  </div>
+  <header class="hero">
+    <div class="eyebrow" data-i18n="hero_eyebrow">Nous vous invitons à célébrer notre mariage</div>
+    <h1>Helena <em>&amp;</em> Oscar</h1>
+    <p data-i18n="hero_date">29 mai 2027 · Massa Lubrense</p>
+  </header>
+
+  <main class="wrap">
+    <section class="count" id="countdown" style="border-top:0;padding:72px 24px">
+      <div class="eyebrow" data-i18n="cd_eyebrow">Plus que</div>
+      <div class="grid" aria-live="off">
+        <div class="u"><div class="n" id="cd-d">–</div><div class="l" data-i18n="cd_d">Jours</div></div>
+        <div class="u"><div class="n" id="cd-h">–</div><div class="l" data-i18n="cd_h">Heures</div></div>
+        <div class="u"><div class="n" id="cd-m">–</div><div class="l" data-i18n="cd_m">Minutes</div></div>
+        <div class="u"><div class="n" id="cd-s">–</div><div class="l" data-i18n="cd_s">Secondes</div></div>
+      </div>
+    </section>
+
+    <section id="programme">
+      <div class="eyebrow" data-i18n="nav_prog">Programme</div>
+      <h2 data-i18n="prog_h2">Le grand jour</h2>
+      <svg class="orn" viewBox="0 0 64 8" aria-hidden="true"><path d="M0 4 Q8 0 16 4 T32 4 T48 4 T64 4" fill="none" stroke="currentColor" style="color:var(--blue)"/></svg>
+      <p style="text-align:center" data-i18n="prog_intro">Nous nous réjouissons de vous accueillir à Massa Lubrense, en Italie, pour célébrer ce moment avec nous.</p>
+      <ul class="timeline">
+        <li><span class="time" data-i18n="t1h">15h30</span><span class="ttl" data-i18n="t1n">Accueil des invités</span><span class="det">Parrocchia di Sant'Andrea Apostolo, Massa Lubrense</span></li>
+        <li><span class="time" data-i18n="t2h">16h30</span><span class="ttl" data-i18n="t2n">Cérémonie religieuse catholique</span></li>
+        <li><span class="time" data-i18n="t3h">Après la cérémonie</span><span class="ttl" data-i18n="t3n">Réception</span><span class="det" data-i18n="t3s">Vin d'honneur, dîner en plein air et soirée dansante au Palazzo Raja</span></li>
+      </ul>
+    </section>
+
+    <section id="lieux">
+      <div class="eyebrow" data-i18n="nav_lieux">Les lieux</div>
+      <h2 data-i18n="lieux_h2">Où nous retrouver</h2>
+      <svg class="orn" viewBox="0 0 64 8" aria-hidden="true"><path d="M0 4 Q8 0 16 4 T32 4 T48 4 T64 4" fill="none" stroke="currentColor" style="color:var(--blue)"/></svg>
+      <div class="venue">
+        <span class="vlabel" data-i18n="v1l">La cérémonie</span>
+        <div class="zoom"><img src="images/church.jpg" alt="Façade de la Parrocchia di Sant'Andrea Apostolo à Massa Lubrense" data-i18n-alt="alt1"></div>
+        <h3>Parrocchia di Sant'Andrea Apostolo</h3>
+        <p class="addr">Via Nastro d'Oro 8, Massa Lubrense</p>
+        <p class="maplink"><a href="https://maps.app.goo.gl/1MggeWZ6kEeFZY9o9" target="_blank" rel="noopener"><span data-i18n="maps_link">Voir sur Google Maps</span> <span aria-hidden="true">↗</span></a></p>
+      </div>
+
+      <div class="venue venue2">
+        <span class="vlabel" data-i18n="v2l">La réception</span>
+        <div class="zoom"><img src="images/palazzo.jpg" alt="Terrasse du Palazzo Raja avec sa pergola et la vue sur la mer" data-i18n-alt="alt2"></div>
+        <h3>Palazzo Raja</h3>
+        <p class="addr">Via Annunziata 14, Massa Lubrense</p>
+        <p class="maplink"><a href="https://maps.app.goo.gl/2PBm2arRkLJ7kwKh7" target="_blank" rel="noopener"><span data-i18n="maps_link">Voir sur Google Maps</span> <span aria-hidden="true">↗</span></a></p>
+      </div>
+    </section>
+
+    <section id="rsvp">
+      <div class="eyebrow">RSVP</div>
+      <h2 data-i18n="rsvp_h2">Serez-vous des nôtres ?</h2>
+      <svg class="orn" viewBox="0 0 64 8" aria-hidden="true"><path d="M0 4 Q8 0 16 4 T32 4 T48 4 T64 4" fill="none" stroke="currentColor" style="color:var(--blue)"/></svg>
+      <p style="text-align:center;margin:0" data-i18n="rsvp_note">Merci de nous faire part de votre réponse avant le 31 mars 2027.</p>
+      <p id="rsvpExt" style="display:none;text-align:center"><a id="rsvpBtn" data-i18n="rsvp_btn" target="_blank" rel="noopener" style="display:inline-block;padding:13px 28px;background:var(--blue);color:#fff;text-decoration:none;letter-spacing:.15em;text-transform:uppercase;font-size:.8rem">Répondre au RSVP</a></p>
+      <form id="rsvpForm">
+        <div class="row">
+          <label><span data-i18n="l_first">Prénom</span><input name="prenom" required></label>
+          <label><span data-i18n="l_last">Nom</span><input name="nom" required></label>
+        </div>
+        <label><span data-i18n="l_mail">Adresse e-mail</span><input name="email" type="email" required autocomplete="email"></label>
+        <label><span data-i18n="l_pres">Serez-vous présent·e ?</span>
+          <select name="presence"><option value="Oui, avec grand plaisir" data-i18n="o_yes">Oui, avec grand plaisir</option><option value="Non, malheureusement" data-i18n="o_no">Non, malheureusement</option></select>
+        </label>
+        <label><span data-i18n="l_comp">Nombre d'accompagnants</span><select name="accompagnants"><option value="0">0</option><option value="1">1</option></select></label>
+        <label><span data-i18n="l_diet">Préférences alimentaires</span><input name="regime" placeholder="Végétarien, sans porc…" data-i18n-ph="ph_diet"></label>
+        <label><span data-i18n="l_all">Allergies</span><input name="allergies" placeholder="Gluten, fruits à coque…" data-i18n-ph="ph_all"></label>
+        <label><span data-i18n="l_msg">Un petit mot pour nous</span><textarea name="commentaire" rows="4"></textarea></label>
+        <button type="submit" data-i18n="send">Envoyer ma réponse</button>
+      </form>
+      <div id="done"></div>
+    </section>
+
+    <section id="faq">
+      <div class="eyebrow" data-i18n="faq_eyebrow">Informations pratiques</div>
+      <h2 data-i18n="faq_h2">Questions fréquentes</h2>
+      <svg class="orn" viewBox="0 0 64 8" aria-hidden="true"><path d="M0 4 Q8 0 16 4 T32 4 T48 4 T64 4" fill="none" stroke="currentColor" style="color:var(--blue)"/></svg>
+      <details open><summary data-i18n="q1">Quelle tenue porter ?</summary><p data-i18n="a1">Une tenue élégante, de type cocktail chic.<br>Pour la cérémonie religieuse, nous vous demandons de prévoir une tenue qui couvre les épaules et les genoux (un châle ou une veste légère fera très bien l'affaire).</p></details>
+      <details><summary data-i18n="q2">Où se garer ?</summary><p data-i18n="a2">Faute de places de parking à proximité de l'église, vous êtes invités à vous garer directement au Palazzo Raja. Le transport entre le lieu de la réception et le lieu de la cérémonie sera assuré par nos soins.</p></details>
+      <details><summary data-i18n="q6">Comment se rendre sur place ?</summary><p data-i18n="a6">Si vous souhaitez louer une voiture à Naples, pour vous éviter tout désagrément nous vous recommandons de la louer chez <a href="https://bullyrent.it" target="_blank" rel="noopener">bullyrent.it</a>.<br><br>Si vous comptez vous rendre à Sorrento, nous vous recommandons de prendre le ferry depuis le port de Naples. Pour les plus aventureux, vous pouvez prendre le train régional (Circumvesuviana) depuis la gare centrale de Naples, mais assurez-vous de n'avoir rien d'urgent de prévu dans la journée avant de vous lancer.<br><br>Pour vous rendre à Massa Lubrense depuis Sorrento, vous pouvez prendre le bus ou un taxi.</p></details>
+      <details><summary data-i18n="q3">Les enfants sont-ils les bienvenus ?</summary><p data-i18n="a3">Oui, mais aucun baby-sitter n'est prévu pour les superviser : ils restent sous la responsabilité de leurs parents.</p></details>
+      <details><summary data-i18n="q5">Peut-on photographier pendant la cérémonie ?</summary><p data-i18n="a5">Nous souhaitons que vous viviez ce moment pleinement avec nous : merci de ranger vos appareils pendant la cérémonie (notre photographe s'en occupe !).<br>N'oubliez pas également de mettre votre téléphone sur silencieux avant d'entrer dans l'église.</p></details>
+      <details><summary data-i18n="q4">Un cadeau de mariage ?</summary><p data-i18n="a4">Votre présence est le plus beau cadeau que vous puissiez nous faire et nous ne vous demandons rien de plus. Si vous souhaitez toutefois nous offrir quelque chose, une cagnotte en ligne nous aidera à financer notre voyage de noces. Le lien sera bientôt disponible ici.</p></details>
+      <details><summary data-i18n="q7">Besoin d'un coup de main pour le voyage ou le séjour, ou de plus d'informations ?</summary><p data-i18n="a7">N'hésitez pas à faire appel à nous, nous nous ferons une joie de vous venir en aide.</p></details>
+    </section>
+  </main>
+  <footer data-i18n="footer">Avec tout notre amour, Helena &amp; Oscar</footer>
+<div id="egg" aria-hidden="true"><img alt=""></div>
+</div>
+
+<script>
+// === À PERSONNALISER ===
+// Mot de passe actuel : HelenaOscar27 (voir la réponse pour en changer)
+var PW_HASH = "46e7cf966abfdc0e792e1dc8bdcc4cfe015d04b3931548351e66d75508bbeba1";
+var RSVP_FORM_URL = ""; // collez ici le lien Google Forms pour ouvrir le RSVP dans une autre fenêtre
+var CONTACT_EMAIL = "helena.godon@gmail.com";
+// =======================
+
+(function(){
+  var target=new Date("2027-05-29T16:30:00+02:00").getTime();
+  function tick(){
+    var t=Math.max(0,target-Date.now());
+    var d=Math.floor(t/864e5),h=Math.floor(t%864e5/36e5),m=Math.floor(t%36e5/6e4),s=Math.floor(t%6e4/1e3);
+    document.getElementById("cd-d").textContent=d;
+    document.getElementById("cd-h").textContent=String(h).padStart(2,"0");
+    document.getElementById("cd-m").textContent=String(m).padStart(2,"0");
+    document.getElementById("cd-s").textContent=String(s).padStart(2,"0");
+  }
+  tick();setInterval(tick,1000);
+})();
+
+(function(){
+  var m=document.getElementById("menu"),b=document.getElementById("menuBtn");
+  function set(o){m.classList.toggle("open",o);b.setAttribute("aria-expanded",o)}
+  b.addEventListener("click",function(e){e.stopPropagation();set(!m.classList.contains("open"))});
+  m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false)})});
+  document.addEventListener("click",function(e){if(!m.contains(e.target))set(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+})();
+
+var T={"en": {"gate_eyebrow": "You're invited", "pw_ph": "Password", "enter": "Enter", "nav_prog": "Program", "nav_lieux": "Venues", "nav_faq": "Practical info", "hero_eyebrow": "You are invited to celebrate our wedding", "hero_date": "May 29, 2027 · Massa Lubrense", "cd_eyebrow": "Only", "cd_d": "Days", "cd_h": "Hours", "cd_m": "Minutes", "cd_s": "Seconds", "prog_h2": "The big day", "prog_intro": "We look forward to welcoming you in Massa Lubrense, Italy, to celebrate this moment with us.", "t3s": "Celebratory aperitivo, outdoor dinner and dancing at Palazzo Raja", "lieux_h2": "Where to find us", "alt1": "Façade of the Parrocchia di Sant'Andrea Apostolo in Massa Lubrense", "alt2": "Terrace of Palazzo Raja with its pergola and sea view", "rsvp_h2": "Will you join us?", "rsvp_btn": "Reply to the RSVP", "l_first": "First name", "l_last": "Last name", "l_mail": "Email address", "l_pres": "Will you attend?", "o_yes": "Yes, with great pleasure", "o_no": "No, unfortunately", "l_comp": "Number of accompanying guests", "l_diet": "Dietary preferences", "ph_diet": "Vegetarian, no pork…", "l_all": "Allergies", "ph_all": "Gluten, tree nuts…", "l_msg": "A little note for us", "send": "Send my reply", "faq_eyebrow": "Practical information", "faq_h2": "Frequently asked questions", "q1": "What should I wear?", "a1": "Elegant attire, cocktail chic.<br>For the religious ceremony, we kindly ask you to wear an outfit that covers your shoulders and knees (a shawl or a light jacket will do perfectly).", "q2": "Where to park?", "a2": "As there is no parking near the church, you are invited to park directly at Palazzo Raja. Transport between the reception venue and the ceremony venue will be provided by us.", "q3": "Are children welcome?", "a3": "Yes, but no babysitter will be provided to supervise them: they remain the responsibility of their parents.", "q4": "A wedding gift?", "a4": "Your presence is the greatest gift you could give us, and we ask for nothing more. If you would still like to give us something, an online fund will help us finance our honeymoon. The link will be available here soon.", "footer": "With all our love, Helena &amp; Oscar", "err": "Incorrect password.", "done_pre": "Last step: ", "done_link": "click here to send your reply by email", "done_saved": "Thank you {n}! Your reply has been saved.", "t1h": "15:30", "t1n": "Pre-ceremony greeting of the guests", "t2h": "16:30", "t2n": "Catholic religious ceremony", "t3h": "After the ceremony", "t3n": "Reception", "rsvp_note": "Please let us know your answer before March 31, 2027.", "q5": "Can we take photos during the ceremony?", "a5": "We want you to experience this moment fully with us: please put your devices away during the ceremony (our photographer has it covered!).<br>Please also remember to put your phone on silent before entering the church.", "v1l": "The ceremony", "v2l": "The reception", "maps_link": "View on Google Maps", "q6": "How do I get there?", "a6": "If you would like to rent a car in Naples, to spare yourself any trouble we recommend renting it from <a href=\"https://bullyrent.it\" target=\"_blank\" rel=\"noopener\">bullyrent.it</a>.<br><br>If you plan to travel to Sorrento, we recommend taking the ferry from the port of Naples. For the more adventurous, you can take the regional train (Circumvesuviana) from Naples Central Station, but make sure you have nothing urgent planned for the day before setting off.<br><br>To get to Massa Lubrense from Sorrento, you can take a bus or a taxi.", "q7": "Need a hand with your trip or stay, or more information?", "a7": "Don't hesitate to reach out to us. We will be delighted to help."}, "it": {"gate_eyebrow": "Siete invitati", "pw_ph": "Password", "enter": "Entra", "nav_prog": "Programma", "nav_lieux": "I luoghi", "nav_faq": "Info pratiche", "hero_eyebrow": "Siete invitati a celebrare il nostro matrimonio", "hero_date": "29 maggio 2027 · Massa Lubrense", "cd_eyebrow": "Mancano solo", "cd_d": "Giorni", "cd_h": "Ore", "cd_m": "Minuti", "cd_s": "Secondi", "prog_h2": "Il grande giorno", "prog_intro": "Siamo felici di accogliervi a Massa Lubrense, in Italia, per celebrare questo momento con noi.", "t3s": "Brindisi di benvenuto, cena all'aperto e serata danzante al Palazzo Raja", "lieux_h2": "Dove trovarci", "alt1": "Facciata della Parrocchia di Sant'Andrea Apostolo a Massa Lubrense", "alt2": "Terrazza del Palazzo Raja con la pergola e la vista sul mare", "rsvp_h2": "Ci sarete?", "rsvp_btn": "Rispondi all'RSVP", "l_first": "Nome", "l_last": "Cognome", "l_mail": "Indirizzo e-mail", "l_pres": "Sarete presenti?", "o_yes": "Sì, con grande piacere", "o_no": "No, purtroppo", "l_comp": "Numero di accompagnatori", "l_diet": "Preferenze alimentari", "ph_diet": "Vegetariano, senza maiale…", "l_all": "Allergie", "ph_all": "Glutine, frutta a guscio…", "l_msg": "Un pensiero per noi", "send": "Invia la mia risposta", "faq_eyebrow": "Informazioni pratiche", "faq_h2": "Domande frequenti", "q1": "Come vestirsi?", "a1": "Abbigliamento elegante, stile cocktail chic.<br>Per la cerimonia religiosa, vi chiediamo di indossare un abito che copra spalle e ginocchia (uno scialle o una giacca leggera andranno benissimo).", "q2": "Dove parcheggiare?", "a2": "Poiché non ci sono parcheggi vicino alla chiesa, vi invitiamo a parcheggiare direttamente al Palazzo Raja. Il trasporto tra il luogo del ricevimento e quello della cerimonia sarà assicurato da noi.", "q3": "I bambini sono i benvenuti?", "a3": "Sì, ma non è previsto alcun servizio di baby-sitting: i bambini restano sotto la responsabilità dei genitori.", "q4": "Un regalo di nozze?", "a4": "La vostra presenza è il regalo più bello che possiate farci e non vi chiediamo altro. Se desiderate comunque farci un dono, una raccolta fondi online ci aiuterà a finanziare il viaggio di nozze. Il link sarà presto disponibile qui.", "footer": "Con tutto il nostro amore, Helena &amp; Oscar", "err": "Password errata.", "done_pre": "Ultimo passaggio: ", "done_link": "clicca qui per inviare la tua risposta via e-mail", "done_saved": "Grazie {n}! La tua risposta è stata registrata.", "t1h": "15:30", "t1n": "Accoglienza degli ospiti", "t2h": "16:30", "t2n": "Cerimonia religiosa cattolica", "t3h": "Dopo la cerimonia", "t3n": "Ricevimento", "rsvp_note": "Vi preghiamo di farci sapere entro il 31 marzo 2027.", "q5": "Si possono fare foto durante la cerimonia?", "a5": "Desideriamo che viviate questo momento fino in fondo insieme a noi: vi preghiamo di riporre i vostri dispositivi durante la cerimonia (ci pensa il nostro fotografo!).<br>Ricordatevi anche di mettere il telefono in modalità silenziosa prima di entrare in chiesa.", "v1l": "La cerimonia", "v2l": "Il ricevimento", "maps_link": "Vedi su Google Maps", "q6": "Come arrivare?", "a6": "Se desiderate noleggiare un'auto a Napoli, per evitare qualsiasi inconveniente vi consigliamo di noleggiarla da <a href=\"https://bullyrent.it\" target=\"_blank\" rel=\"noopener\">bullyrent.it</a>.<br><br>Se avete intenzione di recarvi a Sorrento, vi consigliamo di prendere il traghetto dal porto di Napoli. Per i più avventurosi, è possibile prendere il treno regionale (Circumvesuviana) dalla stazione centrale di Napoli, ma assicuratevi di non avere nulla di urgente in programma durante la giornata prima di partire.<br><br>Per raggiungere Massa Lubrense da Sorrento, potete prendere l'autobus o un taxi.", "q7": "Serve una mano per il viaggio o il soggiorno, o maggiori informazioni?", "a7": "Non esitate a contattarci: saremo felici di aiutarvi."}};
+var FRJ={"err": "Mot de passe incorrect.", "done_pre": "Dernière étape : ", "done_link": "cliquez ici pour envoyer votre réponse par e-mail", "done_saved": "Merci {n} ! Votre réponse est bien enregistrée."};
+var LANGS=[["fr","Français"],["en","English"],["it","Italiano"]];
+var LANG="fr";
+try{LANG=localStorage.getItem("lang")||""}catch(e){}
+if(!T[LANG]&&LANG!=="fr"){var nl=(navigator.language||"fr").slice(0,2);LANG=T[nl]?nl:"fr"}
+function tr(k){return (T[LANG]&&T[LANG][k])||FRJ[k]||k}
+function applyLang(l){
+  LANG=l;try{localStorage.setItem("lang",l)}catch(e){}
+  document.documentElement.lang=l;
+  document.querySelectorAll("[data-i18n],[data-i18n-ph],[data-i18n-alt],[data-i18n-title]").forEach(function(el){
+    if(!el._f)el._f={h:el.innerHTML,ph:el.getAttribute("placeholder"),alt:el.getAttribute("alt"),t:el.getAttribute("title")};
+    var D=el.dataset,d=l==="fr"?null:T[l];
+    if(D.i18n)el.innerHTML=d&&d[D.i18n]||el._f.h;
+    if(D.i18nPh){var p=d&&d[D.i18nPh]||el._f.ph;el.setAttribute("placeholder",p);if(el.hasAttribute("aria-label"))el.setAttribute("aria-label",p)}
+    if(D.i18nAlt)el.setAttribute("alt",d&&d[D.i18nAlt]||el._f.alt);
+    if(D.i18nTitle)el.setAttribute("title",d&&d[D.i18nTitle]||el._f.t);
+  });
+  document.getElementById("langCode").textContent=l.toUpperCase();
+  document.querySelectorAll("[data-lang]").forEach(function(b){b.classList.toggle("on",b.dataset.lang===l)});
+  var er=document.getElementById("err");if(er.textContent)er.textContent=tr("err");
+}
+(function(){
+  function mk(box,cls,after){LANGS.forEach(function(x,i){
+    var b=document.createElement("button");b.type="button";b.dataset.lang=x[0];b.textContent=cls==="g"?x[0].toUpperCase():x[1];
+    b.addEventListener("click",function(e){e.stopPropagation();applyLang(x[0]);if(after)after()});box.appendChild(b)})}
+  var lg=document.getElementById("lang"),lb=document.getElementById("langBtn");
+  function setL(o){lg.classList.toggle("open",o);lb.setAttribute("aria-expanded",o)}
+  mk(document.getElementById("gateLang"),"g");
+  mk(document.getElementById("langPanel"),"p",function(){setL(false)});
+  lb.addEventListener("click",function(e){e.stopPropagation();setL(!lg.classList.contains("open"))});
+  document.addEventListener("click",function(e){if(!lg.contains(e.target))setL(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")setL(false)});
+  applyLang(LANG);
+})();
+
+// Easter egg : une photo apparaît si le commentaire du RSVP parle de nez
+(function(){
+  var re=/\b(nez|narines?|narice|narici|nostrils?|noses?|nasal\w*|naso|nasi|museaux?|snouts?|sniff\w*|snot\w*|renifl\w*|morves?|mocc(?:io|i)|moccioli?|annus\w*|fiut[oi]|pifs?|pinocchios?|cyranos?|rhino\w*|odorats?|olfact\w*|olfatt\w*|boogers?|schnoz\w*|beaks?)\b/;
+  var box=document.getElementById("egg"),ta=document.querySelector('textarea[name="commentaire"]'),was=false;
+  if(!box||!ta)return;
+  function hide(){box.classList.remove("show");box.setAttribute("aria-hidden","true")}
+  box.addEventListener("click",hide);
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
+  ta.addEventListener("input",function(){
+    var t=ta.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""),hit=re.test(t);
+    if(hit&&!was&&window.IMAGES&&IMAGES.easter){box.querySelector("img").src=IMAGES.easter;box.classList.add("show");box.setAttribute("aria-hidden","false")}
+    was=hit;
+  });
+})();
+
+async function sha(s){var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}
+function unlock(){document.getElementById("gate").style.display="none";document.getElementById("site").style.display="block";window.scrollTo(0,0)}
+try{if(sessionStorage.getItem("ok")===PW_HASH)unlock()}catch(e){}
+async function tryEnter(){
+  var v=document.getElementById("pw").value.trim();
+  if(await sha(v)===PW_HASH){try{sessionStorage.setItem("ok",PW_HASH)}catch(e){};unlock()}
+  else document.getElementById("err").textContent=tr("err");
+}
+document.getElementById("enter").onclick=tryEnter;
+document.getElementById("pw").addEventListener("keydown",function(e){if(e.key==="Enter")tryEnter()});
+
+if(RSVP_FORM_URL){document.getElementById("rsvpExt").style.display="block";document.getElementById("rsvpBtn").href=RSVP_FORM_URL;document.getElementById("rsvpForm").style.display="none"}
+document.getElementById("rsvpForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  var d=Object.fromEntries(new FormData(e.target).entries());
+  var done=document.getElementById("done");
+  var saved=false;
+  try{
+    var db=window.claude&&await claude.use("db");
+    var u=await claude.use("user");
+    if(db&&u){var id=await u.id();await db.doc("rsvps/"+id).set(Object.assign({date:new Date().toISOString()},d));saved=true}
+  }catch(err){}
+  if(saved){done.innerHTML=tr("done_saved").replace("{n}",d.prenom.replace(/</g,""));}
+  else{
+    var body="Langue: "+LANG+"\nPrénom: "+d.prenom+"\nNom: "+d.nom+"\nE-mail: "+d.email+"\nPrésence: "+d.presence+"\nAccompagnants: "+d.accompagnants+"\nPréférences alimentaires: "+d.regime+"\nAllergies: "+d.allergies+"\nCommentaire: "+d.commentaire;
+    var href="mailto:"+CONTACT_EMAIL+"?subject="+encodeURIComponent("RSVP mariage : "+d.prenom+" "+d.nom)+"&body="+encodeURIComponent(body);
+    done.innerHTML=tr("done_pre")+"<a href=\""+href+"\">"+tr("done_link")+"</a>.";
+  }
+  e.target.style.display="none";done.style.display="block";
+});
+</script>
+
+<script>var IMAGES={easter:"images/easter.jpg"};</script>
+</body>
+</html>
